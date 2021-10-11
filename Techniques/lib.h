@@ -12,6 +12,8 @@
 #include <cstring>
 #include <algorithm>
 #include <stdio.h>
+#include <functional>
+#include <bitset>
 
 #include <sys/stat.h>
 
@@ -22,8 +24,13 @@
 #define isfaopen if(fa.is_open())
 //#define isfnopen if(fn.is_open())
 
+//secuential:
 #define SEQ_MAX_SIZE_OF_AUX_FILE 5
 #define SEQ_MAX_ERASED_RECORDS 3
+
+//hash:
+#define HASH_BUCKET_SIZE 3  //fb
+#define HASH_HEIGHT 3       //D
 
 using namespace std;
 
@@ -72,6 +79,11 @@ void init(){
     cleanFile("daux.dat");
 }
 
+void init2(){
+    cleanFile("data.dat");
+    cleanFile("index.dat");
+}
+
 template<typename T>
 void write(fstream &f, T &t){f.write((char*) &t, sizeof(t));}
 
@@ -80,5 +92,12 @@ void read(fstream &f, T &t){f.read((char*) &t, sizeof(t));}
 
 template<typename T>
 bool comp (T& a, T& b){return  a < b;}
+
+string local_trim(string cad, long height){
+    string new_cad = "";
+    for(int i = cad.size() - height; i < cad.size(); i++)
+        new_cad += cad[i];
+    return new_cad;
+}
 
 #endif  //LIB.H
