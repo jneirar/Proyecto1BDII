@@ -3,16 +3,17 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/UTEC.jpg" width="200">
 
+## **Integrantes**
+* Marcelo Juan Surco Salas
+* Jorge Luis Neira Riveros
+* Jean Paul Melendez Cabezas
 ## **Tabla de contenido**
 * [Introducción](#introducción)
 * [Técnicas a usar en el proyecto](#técnicas-a-usar)
 * [Resultados](#resultados)
 * [Pruebas y video del proyecto](#pruebas)
 # **Introducción**
-## **Integrantes**
-* Marcelo Juan Surco Salas
-* Jorge Luis Neira Riveros
-* Jean Paul Melendez Cabezas
+
 
 ## **Objetivo del proyecto**
 El principal objetivo es desarrollar un SGBD con sus principales funciones para el manejo de datos, utilizando técnicas estudiadas en clase y que sean implementadas de tal forma de que el sistema sea eficiente y amigable para usuario.
