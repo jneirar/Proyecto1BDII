@@ -99,8 +99,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(8, 255, 200);
-background-color: rgb(8, 255, 200);</string>
+     <string notr="true">background-color: rgb(49, 49, 49);</string>
     </property>
     <property name="text">
      <string/>
@@ -129,10 +128,26 @@ background-color: rgb(8, 255, 200);</string>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(218, 218, 218);</string>
+     <string notr="true">background-color: rgb(82, 82, 82);</string>
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>0</y>
+      <width>561</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(202, 62, 71);</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:600; color:#ffffff;&quot;&gt;Ventana Principal&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
    <zorder>label_4</zorder>
@@ -143,6 +158,7 @@ background-color: rgb(8, 255, 200);</string>
    <zorder>eliminar</zorder>
    <zorder>ver_registros</zorder>
    <zorder>label_3</zorder>
+   <zorder>label_5</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
