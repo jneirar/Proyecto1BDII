@@ -7,32 +7,47 @@ template <typename TKey>
 class RecordHash
 {
     TKey key;
-    char nombre[20];
-    char brand[20];
-    char style[20];
-    char country[20];
-    char stars[20];
-    
-//Review,Brand,Style,Country,Stars
+    char brand[35];
+    char style[5];
+    char country[15];
+    float stars;
+
 public:
-    void setData(TKey key, string _brand, string _style, string _country, string _stars)
+    RecordHash()
+    {
+        this->key = 0;
+        string brand = "brand";
+        strcpy(this->brand, brand.c_str());
+        string brand = "style";
+        strcpy(this->style, style.c_str());
+        string brand = "country";
+        strcpy(this->country, country.c_str());
+        this->stars = 0.0;
+    }
+    RecordHash(TKey key, string brand, string style, string country, float stars)
     {
         this->key = key;
-        string nombre = "Plato " + to_string(key);
-        strcpy(this->nombre, nombre.c_str());
-        strcpy(this->brand, _brand.c_str());
-        strcpy(this->style, _style.c_str());
-        strcpy(this->country, _country.c_str());
-        strcpy(this->stars, _stars.c_str());
+        strcpy(this->brand, brand.c_str());
+        strcpy(this->style, style.c_str());
+        strcpy(this->country, country.c_str());
+        this->stars = stars;
+    }
+
+    void setData(TKey key, string brand, string style, string country, float stars)
+    {
+        this->key = key;
+        strcpy(this->brand, brand.c_str());
+        strcpy(this->style, style.c_str());
+        strcpy(this->country, country.c_str());
+        this->stars = stars;
     }
 
     void showData()
     {
         cout << "\tKey: " << key << "\n";
-        cout << "\tNombre: " << nombre << "\n\n";
         cout << "\tBrand: " << brand << "\n\n";
         cout << "\tStyle: " << style << "\n\n";
-        cout << "\tcountry: " << country << "\n\n";
+        cout << "\tCountry: " << country << "\n\n";
         cout << "\tStars: " << stars << "\n\n";
     }
     TKey getKey()
@@ -42,14 +57,20 @@ public:
 
     RecordHash &operator=(const RecordHash &a)
     {
+        TKey key;
+        char brand[35];
+        char style[5];
+        char country[15];
+        float stars;
+
         this->key = a.key;
-        for (int i = 0; i < 20; i++){
-            this->nombre[i] = a.nombre[i];
+        for (int i = 0; i < 35; i++)
             this->brand[i] = a.brand[i];
+        for (int i = 0; i < 5; i++)
             this->style[i] = a.style[i];
+        for (int i = 0; i < 15; i++)
             this->country[i] = a.country[i];
-            this->stars[i] = a.stars[i];
-        }
+        this->stars = a.stars;
         return *this;
     }
     bool operator<(const RecordHash &a) { return this->key < a.key; }

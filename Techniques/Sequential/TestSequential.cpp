@@ -4,6 +4,18 @@ int main()
 {
     cout << "---------------Borrando archivos---------------\n";
     init();
+    Sequential<Record<char[25]>, string> seq("data", "daux");
+    Record<char[25]> r("Bulbasaur", "Grass", 318, 1, false);
+    seq.insert(r);
+    r.setData("Ivysaur", "Grass", 405, 1, false);
+    seq.insert(r);
+    r.setData("Charmeleon", "Fire", 309, 1, false);
+    seq.insert(r);
+    seq.showAll();
+
+    //r.setData
+
+    /*
     Sequential<int> seq("data", "daux");
     Record<int> r;
     vector<Record<int>> vr;
@@ -114,6 +126,6 @@ int main()
     rs = seq.search(1);
     if (rs)
         rs->showData();
-
+*/
     return 0;
 }

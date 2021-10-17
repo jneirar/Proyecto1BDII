@@ -8,25 +8,45 @@ using namespace std;
 template <typename TKey>
 class Record
 {
-    TKey key;
-    char nombre[20];
-    char type[15];
-    char total[6];
-    char generation[5];
-    char legendary[5];
-    
+    TKey key; //nombre[25]
+    char type[8];
+    int total;
+    int generation;
+    bool legendary;
+
     long next = -1;
     char file = 'd';
 
 public:
-    void setData(TKey key, string nombre, string _type, string _total, string _generation, string _legendary)
+    Record()
     {
-        this->key = key;
-        strcpy(this->nombre, nombre.c_str());
-        strcpy(this->type, _type.c_str());
-        strcpy(this->total, _total.c_str());
-        strcpy(this->generation, _generation.c_str());
-        strcpy(this->legendary, _legendary.c_str());
+        string name = "No name";
+        string type = "No type";
+        strcpy(this->key, name.c_str());
+        strcpy(this->type, type.c_str());
+        this->total = 0;
+        this->generation = 0;
+        this->legendary = 0;
+        this->next = -1;
+        char file = 'd';
+    }
+    Record(string name, string type, int total, int generation, bool legendary)
+    {
+        strcpy(this->key, name.c_str());
+        strcpy(this->type, type.c_str());
+        this->total = total;
+        this->generation = generation;
+        this->legendary = legendary;
+        this->next = -1;
+        char file = 'd';
+    }
+    void setData(string name, string type, int total, int generation, bool legendary)
+    {
+        strcpy(this->key, name.c_str());
+        strcpy(this->type, type.c_str());
+        this->total = total;
+        this->generation = generation;
+        this->legendary = legendary;
         this->next = -1;
         char file = 'd';
     }
@@ -34,7 +54,6 @@ public:
     void showData()
     {
         cout << "Key: " << key << "\n";
-        cout << "Nombre: " << nombre << "\n";
         cout << "Tipo: " << type << "\n";
         cout << "Total: " << total << "\n";
         cout << "Generacion: " << generation << "\n";
@@ -55,26 +74,20 @@ public:
     {
         return file;
     }
-    int getKey()
+    string getKey()
     {
-        return key;
+        return string(key);
     }
     Record &operator=(const Record &a)
     {
-        this->key = a.key;
-        for (int i = 0; i < 20; i++)
-            this->nombre[i] = a.nombre[i];
-        
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 25; i++)
+            this->key[i] = a.key[i];
+
+        for (int i = 0; i < 8; i++)
             this->type[i] = a.type[i];
-        
-        for (int i = 0; i < 6; i++)
-            this->total[i] = a.total[i];
-        
-        for (int i = 0; i < 5; i++){
-          this->generation[i] = a.generation[i];
-          this->legendary[i] = a.legendary[i];
-        }
+        this->total = a.total;
+        this->generation = a.generation;
+        this->legendary = a.legendary;
         this->next = a.next;
         this->file = a.file;
         return *this;

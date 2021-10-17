@@ -3,7 +3,7 @@
 
 #include "record.h"
 
-template <typename TKey>
+template <typename TRecord, typename TKey>
 class Sequential
 {
 private:
@@ -12,7 +12,7 @@ private:
     long sizeData = 0;
     long sizeAux = 0;
 
-    const long sizeRecord = sizeof(Record<TKey>);
+    const long sizeRecord = sizeof(TRecord);
 
     void refactor()
     {
@@ -26,7 +26,7 @@ private:
                 cleanFile(newName);
                 fnopen(newName)
                 {
-                    Record<TKey> record;
+                    TRecord record;
                     f.seekg(0, ios::beg);
                     read(f, record);
 
@@ -52,7 +52,7 @@ private:
                         if (file == 'a')
                         {
                             //Entrar a aux, guardar datos en un vector, ordenar y guardar en temp.data
-                            vector<Record<TKey>> records_in_aux;
+                            vector<TRecord> records_in_aux;
                             do
                             {
                                 fa.seekg(next, ios::beg);
@@ -61,8 +61,8 @@ private:
                                 next = record.getNext();
                                 file = record.getFile();
                             } while (file == 'a' && next != -1);
-                            sort(records_in_aux.begin(), records_in_aux.end(), comp<Record<TKey>>);
-                            for (Record<TKey> rec : records_in_aux)
+                            sort(records_in_aux.begin(), records_in_aux.end(), comp<TRecord>);
+                            for (TRecord rec : records_in_aux)
                             {
                                 rec.setNext(fn_pos + sizeRecord, 'd');
                                 fn.seekp(fn_pos, ios::beg);
@@ -113,8 +113,8 @@ private:
             faopen(auxName);
             isfaopen
             {
-                vector<Record<TKey>> vtmp;
-                Record<TKey> tmp;
+                vector<TRecord> vtmp;
+                TRecord tmp;
                 f.seekg(0, ios::beg);
                 read(f, tmp);
                 vtmp.push_back(tmp);
@@ -160,13 +160,13 @@ private:
         else cout << "SequentialError al abrir data en refact\n";
     }
 
-    long binarySearch(TKey key)
+    long binarySearch(string key)
     {
         long res = 0;
         fopen(fileName);
         isfopen
         {
-            Record<TKey> tmp;
+            TRecord tmp;
             //Menor
             f.seekg(0, ios::beg);
             read(f, tmp);
@@ -216,12 +216,12 @@ private:
         return res;
     }
 
-    long linealSearch(TKey key)
+    long linealSearch(string key)
     {
         return 0;
     }
 
-    long insideSearch(TKey key)
+    long insideSearch(string key)
     {
         return binarySearch(key);
         //return linealSearch(key);
@@ -232,8 +232,8 @@ public:
     {
         this->fileName = _fileName + ".dat";
         this->auxName = _auxName + ".dat";
-        sizeData = sizeFile<Record<TKey>>(fileName);
-        sizeAux = sizeFile<Record<TKey>>(auxName);
+        sizeData = sizeFile<TRecord>(fileName);
+        sizeAux = sizeFile<TRecord>(auxName);
     }
 
     ~Sequential()
@@ -241,10 +241,10 @@ public:
         //refactor();
     }
 
-    void insertAll(vector<Record<TKey>> records)
+    void insertAll(vector<TRecord> records)
     {
-        sort(records.begin(), records.end(), comp<Record<TKey>>);
-        for (Record<TKey> record : records)
+        sort(records.begin(), records.end(), comp<TRecord>);
+        for (TRecord record : records)
         {
             insert(record);
         }
@@ -260,7 +260,7 @@ public:
             faopen(auxName);
             isfaopen
             {
-                Record<TKey> tmp;
+                TRecord tmp;
                 f.seekg(0, ios::beg);
                 read(f, tmp);
                 long next = tmp.getNext();
@@ -302,7 +302,7 @@ public:
         else cout << "SequentialError al abrir data en showAll\n";
     }
 
-    void insert(Record<TKey> &record)
+    void insert(TRecord &record)
     {
         record.setNext(-1, 'd');
         if (sizeData == 0)
@@ -323,7 +323,7 @@ public:
         fopen(fileName);
         isfopen
         {
-            Record<TKey> tmp;
+            TRecord tmp;
             f.seekg(pos);
             read(f, tmp);
 
@@ -383,7 +383,7 @@ public:
                 else
                 {
                     //Si hay espacio disponible (registro eliminado antes) insertarlo ahí
-                    Record<TKey> tmpNext;
+                    TRecord tmpNext;
                     f.seekg(pos + sizeData);
                     read(f, tmpNext);
                     if (tmpNext.getNext() == -2)
@@ -426,9 +426,9 @@ public:
         else cout << "SequentialError al abrir archivo data en add\n";
     }
 
-    Record<TKey> *search(TKey key)
+    TRecord *search(TKey key)
     {
-        Record<TKey> *tmp = new Record<TKey>;
+        TRecord *tmp = new TRecord;
         long pos = insideSearch(key);
         fopen(fileName);
         isfopen
@@ -487,12 +487,12 @@ public:
         cout << "No existe el registro\n";
         return nullptr;
     }
-    vector<Record<TKey>> search(int begin, int end)
+    vector<TRecord> search(int begin, int end)
     {
-        vector<Record<TKey>> result;
+        vector<TRecord> result;
         long pos = insideSearch(begin);
         char file;
-        Record<TKey> tmp;
+        TRecord tmp;
         fopen(fileName);
         isfopen
         {
@@ -533,7 +533,7 @@ public:
             f.close();
         }
         else cout << "SequentialError al abrir data en searchRange\n";
-        sort(result.begin(), result.end(), comp<Record<TKey>>);
+        sort(result.begin(), result.end(), comp<TRecord>);
         return result;
     }
 
@@ -555,8 +555,8 @@ public:
             faopen(auxName);
             isfaopen
             {
-                Record<TKey> record;
-                Record<TKey> recordNext;
+                TRecord record;
+                TRecord recordNext;
                 f.seekg(0, ios::beg);
                 read(f, record);
                 long next = record.getNext(), nextPrev = 0;
@@ -656,7 +656,7 @@ public:
                 f.close();
                 fa.close();
                 //Verificar si requiere reorganización por cantidad de eliminados
-                auto sizeErased = sizeFile<Record<TKey>>(fileName) + sizeFile<Record<TKey>>(auxName) - sizeData - sizeAux;
+                auto sizeErased = sizeFile<TRecord>(fileName) + sizeFile<TRecord>(auxName) - sizeData - sizeAux;
                 cout << sizeErased << "\n";
                 if (sizeErased >= SEQ_MAX_ERASED_RECORDS)
                 {
