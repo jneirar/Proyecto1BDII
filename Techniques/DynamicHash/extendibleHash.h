@@ -111,6 +111,43 @@ public:
         else cout << "Hash error al abrir data en showAll\n";
     }
 
+    void showBuckets()
+    {
+        cout << "FreeList: " << freeListBucket << "\n";
+        fopen(fileName);
+        isfopen
+        {
+            if (freeListBucket != -1)
+            {
+                long pos_free_list = freeListBucket;
+                Bucket<TKey> bucket_free_list;
+                int i_free_list = 1;
+                while (pos_free_list != -1)
+                {
+                    f.seekg(pos_free_list, ios::beg);
+                    read(f, bucket_free_list);
+                    cout << "\nPos: " << pos_free_list;
+                    cout << "\t\tBucket " << i_free_list++ << ":\n";
+                    bucket_free_list.showNotAll();
+                    pos_free_list = bucket_free_list.getNext();
+                }
+            }
+            cout << "\nIndex:\n";
+            for (long i = 0; i < (1 << HASH_HEIGHT); i++)
+            {
+                string cad = bitset<HASH_HEIGHT>(i).to_string();
+                cout << i << " - " << cad << "\t" << index[cad] << "\t" << index_size[cad] << "\n";
+                cout << "Bucket: ";
+                Bucket<TKey> bucket;
+                f.seekg(index[cad], ios::beg);
+                read(f, bucket);
+                bucket.showNotAll();
+            }
+            f.close();
+        }
+        else cout << "Hash error al abrir data en showAll\n";
+    }
+
     void insert(RecordHash<TKey> record)
     {
         if (exists(record.getKey()))
@@ -513,7 +550,7 @@ void ExtendibleHash<TKey>::readIndex()
             f.read(buffer, HASH_HEIGHT);
             buffer[HASH_HEIGHT] = '\0';
             cad = buffer;
-            delete buffer;
+            delete[] buffer;
             if (cad == "")
                 return;
             //read page
