@@ -1,6 +1,7 @@
 #include "sequential.h"
 
-int main(){
+int main()
+{
     cout << "---------------Borrando archivos---------------\n";
     init();
     Sequential<int> seq("data", "daux");
@@ -30,8 +31,7 @@ int main(){
     r.setData(50);
     seq.insert(r);
     seq.showAll();
-    
-    
+
     cout << "\n---------------Insert 1 record more in aux (max 5)---------------\n";
     cout << "---------------Insert 1 to refactor---------------\n";
     r.setData(1);
@@ -50,35 +50,40 @@ int main(){
     seq.insert(r);
     seq.showAll();
 
-
     cout << "\n---------------Search 5---------------\n";
     auto rs = seq.search(5);
-    if(rs)  rs->showData();
+    if (rs)
+        rs->showData();
     cout << "\n---------------Search 50---------------\n";
     rs = seq.search(50);
-    if(rs)  rs->showData();
+    if (rs)
+        rs->showData();
     cout << "\n---------------Search 3---------------\n";
     rs = seq.search(3);
-    if(rs)  rs->showData();
+    if (rs)
+        rs->showData();
     cout << "\n---------------Search 85---------------\n";
     rs = seq.search(85);
-    if(rs)  rs->showData();
+    if (rs)
+        rs->showData();
     cout << "\n---------------Search 100---------------\n";
     rs = seq.search(100);
-    if(rs)  rs->showData();
-
+    if (rs)
+        rs->showData();
 
     cout << "\n---------------Search 3 to 20---------------\n";
     vr = seq.search(3, 20);
     cout << "Result size: " << vr.size() << "\n";
-    for(auto rec : vr){
+    for (auto rec : vr)
+    {
         rec.showData();
     }
 
     cout << "\n---------------Search 40 to 100---------------\n";
     vr = seq.search(40, 100);
     cout << "Result size: " << vr.size() << "\n";
-    for(auto rec : vr){
+    for (auto rec : vr)
+    {
         rec.showData();
     }
 
@@ -89,7 +94,8 @@ int main(){
     seq.showAll();
     cout << "\n---------------Search 85---------------\n";
     rs = seq.search(85);
-    if(rs)  rs->showData();
+    if (rs)
+        rs->showData();
 
     cout << "\n---------------Erase 46---------------\n";
     seq.erase(46);
@@ -97,7 +103,8 @@ int main(){
     seq.showAll();
     cout << "\n---------------Search 46---------------\n";
     rs = seq.search(46);
-    if(rs)  rs->showData();
+    if (rs)
+        rs->showData();
 
     cout << "\n---------------Erase 1(REFACTOR)---------------\n";
     seq.erase(1);
@@ -105,8 +112,8 @@ int main(){
     seq.showAll();
     cout << "\n---------------Search 1---------------\n";
     rs = seq.search(1);
-    if(rs)  rs->showData();
-
+    if (rs)
+        rs->showData();
 
     return 0;
 }
