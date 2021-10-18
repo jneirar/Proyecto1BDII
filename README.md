@@ -62,7 +62,7 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 | Operación | Secuencial | Extendible Hash |
 | --- | --- | --- |
 | Inserción de registros en cantidad | 0.073335 seg | 0.200467 seg |
-| Inserción de un solo registro | 0.000685 seg al final y 0.000553 seg con uso del archivo auxiliar  | 0.000517 seg una key nueva y 0.000194 seg si es repetida y no se inserta |
+| Inserción de un solo registro | 0.000685 seg | 0.000517 seg |
 | Búsqueda de un registro | 0.000487 seg | 0.000205 seg |
 | Búsqueda por rango| 0.005138 seg  | 0.006695 seg |
 
@@ -72,7 +72,7 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 | Operación | Secuencial | Extendible Hash |
 | --- | --- | --- |
 | Inserción de registros en cantidad | 0.061416 seg | 0.52706 seg |
-| Inserción de un solo registro | 0.000371 seg al final y 0.000261 seg con uso del archivo auxiliar  | 0.000239 seg una key nueva y 0.000154 seg si es repetida y no se inserta |
+| Inserción de un solo registro | 0.000371 seg | 0.000239 seg |
 | Búsqueda de un registro | 0.000208 seg | 0.000158 seg |
 | Búsqueda por rango| 0.001402 seg  | 0.001966 seg |
 
@@ -81,7 +81,7 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 | Operación | Secuencial | Extendible Hash |
 | --- | --- | --- |
 | Inserción de registros en cantidad | 0.008144 seg | 0.006677 seg |
-| Inserción de un solo registro | 0.000181 seg al final y 0.000246 seg con uso del archivo auxiliar  | 0.000139 seg una key nueva y 0.000152 seg si es repetida y no se inserta |
+| Inserción de un solo registro | 0.000181 seg | 0.000139 seg |
 | Búsqueda de un registro | 0.000206 seg | 0.000158 seg |
 | Búsqueda por rango| 0.000430 seg  | 0.001861 seg |
 
