@@ -82,7 +82,7 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 | --- | --- | --- |
 | Inserción de registros en cantidad | 0.008144 seg | 0.006677 seg |
 | Inserción de un solo registro | 0.000181 seg | 0.000139 seg |
-| Búsqueda de un registro | 0.000206 seg | 0.000158 seg |
+| Búsqueda de un registro | 0.000206 seg | 0.000107 seg |
 | Búsqueda por rango| 0.000430 seg  | 0.001861 seg |
 
 ## Accesos a memoria secundaria
