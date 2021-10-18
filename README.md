@@ -15,6 +15,7 @@
 * [Resultados](#resultados)
   * [Tiempo de ejecución](#tiempo-de-ejecución)
   * [Gráficos de comparación](#gráficos-de-comparación)
+  * [Acessos a memoria secundaria](#accesos-a-memoria-secundaria)
   * [Discusión y análisis de resultados experimentales](#discusión-y-análisis-de-resultados-experimentales)
 * [Pruebas y video del proyecto](#pruebas)
 # **Introducción**
