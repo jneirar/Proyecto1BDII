@@ -62,46 +62,63 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 # **Resultados**
 
 ## Tiempo de Ejecución
+Tiempo medido en segundos
 
-### Para 2500 registros
+### Inserción de registros
 
-| Operación | Secuencial | Extendible Hash |
-| --- | --- | --- |
-| Inserción de registros en cantidad | 0.073335 seg | 0.200467 seg |
-| Inserción de un solo registro | 0.000685 seg | 0.000517 seg |
-| Búsqueda de un registro | 0.000487 seg | 0.000205 seg |
-| Búsqueda por rango| 0.005138 seg  | 0.006695 seg |
+| Técnica |  |  | | | |
+| | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
+| --- | --- | --- | --- | --- | --- |
+| Secuencial | 0,038367 | 0,091864 | 0,125376 |0,167607 | 0,21283 | 
+| Extendible Hash | 0,037854 | 0,080746 | 0,130043 | 0,190775 | 0,224702 |
 
+### Búsqueda de un registro
 
-### Para 1000 registros
+| Técnica |  |  | | | |
+| | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
+| --- | --- | --- | --- | --- | --- |
+| Secuencial | 0,038367 | 0,091864 | 0,125376 |0,167607 | 0,21283 | 
+| Extendible Hash | 0,037854 | 0,080746 | 0,130043 | 0,190775 | 0,224702 |
 
-| Operación | Secuencial | Extendible Hash |
-| --- | --- | --- |
-| Inserción de registros en cantidad | 0.061416 seg | 0.52706 seg |
-| Inserción de un solo registro | 0.000371 seg | 0.000239 seg |
-| Búsqueda de un registro | 0.000208 seg | 0.000158 seg |
-| Búsqueda por rango| 0.001402 seg  | 0.001966 seg |
+### Búsqueda por rango
 
-### Para 100 registros
-
-| Operación | Secuencial | Extendible Hash |
-| --- | --- | --- |
-| Inserción de registros en cantidad | 0.008144 seg | 0.006677 seg |
-| Inserción de un solo registro | 0.000181 seg | 0.000139 seg |
-| Búsqueda de un registro | 0.000206 seg | 0.000107 seg |
-| Búsqueda por rango| 0.000430 seg  | 0.001861 seg |
-
-### Gráficos de comparación
-
-<img src="/imagenes/insercion_cantidad.JPG" width="600">
-<img src="/imagenes/un_registro.JPG" width="600">
-<img src="/imagenes/busqueda_registro.jpeg" width="600">
-<img src="/imagenes/rango_1.JPG" width="600">
-
-
+| Técnica |  |  | | | |
+| | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
+| --- | --- | --- | --- | --- | --- |
+| Secuencial | 0,038367 | 0,091864 | 0,125376 |0,167607 | 0,21283 | 
+| Extendible Hash | 0,037854 | 0,080746 | 0,130043 | 0,190775 | 0,224702 |
 
 ## Accesos a memoria secundaria
 Para obtener los accesos a memoria secundaria dentro de las funciones especificadas, se contará los "reads" y "writes" que haga la función en su tiempo de ejecución.
+
+### Inserción de registros
+
+| Técnica |  |  | | | |
+| | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
+| --- | --- | --- | --- | --- | --- |
+| Secuencial | 2491 | 4991 | 7491 | 9991 | 11996 | 
+| Extendible Hash | 1184 | 2376 | 4235 | 5735 | 7538 |
+
+### Busqueda de un registro
+
+| Técnica |  |  | | | |
+| | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
+| --- | --- | --- | --- | --- | --- |
+| Secuencial | 12 | 13 | 14 | 14 | 14 | 
+| Extendible Hash | 1 | 1 | 1 | 1 | 1 |
+
+
+### Gráficos de comparación
+
+#### Tiempo de ejecución
+<img src="/imagenes/insercion_cantidad.JPG" width="600">
+<img src="/imagenes/busqueda_registro.jpeg" width="600">
+<img src="/imagenes/rango_1.JPG" width="600">
+
+#### Accesos a memoria secundaria
+
+<img src="/imagenes/accesos_insercion.JPG" width="600">
+<img src="/imagenes/accesos_bregistro.JPG" width="600">
 
 ## Discusión y análisis de resultados experimentales
 Los resultados experimentales muestran que entre ambas técnicas de almacenamiento de datos, existen diferencias significativas en sus tiempos de ejecución acorde a la funcionalidad que se requiera.
