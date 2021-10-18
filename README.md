@@ -77,16 +77,16 @@ Tiempo medido en segundos
 | Técnica | | | | | |
 | :-------------------: | --- | --- | --- | --- | --- |
 | | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
-| Secuencial | 0,038367 | 0,091864 | 0,125376 |0,167607 | 0,21283 | 
-| Extendible Hash | 0,037854 | 0,080746 | 0,130043 | 0,190775 | 0,224702 |
+| Secuencial | 0,000194 | 0,000195 | 0,000203 | 0,000216 | 0,000241 | 
+| Extendible Hash | 0,000181 | 0,000182 | 0,000182 | 0,000198 | 0,000209 |
 
 ### Búsqueda por rango
 
 | Técnica | | | | | |
 | :-------------------: | --- | --- | --- | --- | --- |
 | | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
-| Secuencial | 0,038367 | 0,091864 | 0,125376 |0,167607 | 0,21283 | 
-| Extendible Hash | 0,037854 | 0,080746 | 0,130043 | 0,190775 | 0,224702 |
+| Secuencial | 0,001013 | 0,00171 | 0,001225 | 0,001679 | 0,001810 | 
+| Extendible Hash | 0,002442 | 0,003149 | 0,003955 | 0,005072 | 0,005527 |
 
 ## Accesos a memoria secundaria
 Para obtener los accesos a memoria secundaria dentro de las funciones especificadas, se contará los "reads" y "writes" que haga la función en su tiempo de ejecución.
@@ -111,9 +111,9 @@ Para obtener los accesos a memoria secundaria dentro de las funciones especifica
 ### Gráficos de comparación
 
 #### Tiempo de ejecución
-<img src="/imagenes/insercion_cantidad.JPG" width="600">
-<img src="/imagenes/busqueda_registro.jpeg" width="600">
-<img src="/imagenes/rango_1.JPG" width="600">
+<img src="/imagenes/insercion_t.JPG" width="600">
+<img src="/imagenes/busqueda_t.JPG" width="600">
+<img src="/imagenes/busqueda_rt.JPG" width="600">
 
 #### Accesos a memoria secundaria
 
