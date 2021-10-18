@@ -4,9 +4,10 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/7/7a/UTEC.jpg" width="200">
 
 ## **Integrantes**
-* Marcelo Juan Surco Salas
-* Jorge Luis Neira Riveros
-* Jean Paul Melendez Cabezas
+* Melendez Cabezas, Jean Paul
+* Neira Riveros, Jorge Luis
+* Surco Salas, Marcelo Juan
+
 ## **Tabla de contenido**
 * [Introducción](#introducción)
 * [Técnicas a usar en el proyecto](#técnicas-a-usar)
@@ -18,45 +19,67 @@
   * [Acessos a memoria secundaria](#accesos-a-memoria-secundaria)
   * [Discusión y análisis de resultados experimentales](#discusión-y-análisis-de-resultados-experimentales)
 * [Pruebas y video del proyecto](#pruebas)
+
 # **Introducción**
 
-
 ## **Objetivo del proyecto**
-El principal objetivo es desarrollar un SGBD con sus principales funciones para el manejo de datos, utilizando técnicas estudiadas en clase y que sean implementadas de tal forma de que el sistema sea eficiente y amigable para usuario.
+El principal objetivo es desarrollar un Sistema Gestor de Bases de Datos (SGBD) con sus principales funciones para el manejo de datos, utilizando técnicas estudiadas en clase y que sean implementadas de tal forma de que el sistema sea eficiente y amigable para usuario.
 
 ## **Dominio de los datos**
-Para el dominio de datos...
+Los datos a utilizar pertecen al repositorio público de bases de datos https://www.kaggle.com/datasets, del cual se obtuvieron dos bases de datos, uno de pokemones y otro de reviews de ramen. Estas tablas tienen columnas atributos del tipo entero, booleano y string. 
+
 ## **Resultados esperados**
-Los resultados esperados son, un SGDB funcional y que mediante las técnicas implementadas sea eficiente, además de poder mostrarlo en una GUI amigable para los usuarios.
+Diseñar e implementar un SGDB funcional y que, mediante las técnicas implementadas, sea eficiente, además de poder mostrarlo en una GUI amigable para los usuarios.
+
 # **Técnicas a usar**
 - [Extendible Hash](#extendible-hash)
 - [Sequential File](#sequential-file)
   
-
 ## **Extendible Hash**
 <!--- >Explicación de la técnica <--->
-Para el almacenamiento de datos se hará uso del funcionamiento de una tabla hash, por lo que dentro de la estructura se hará uso de la función hash proporcionada por el compilador de C ++, lo cual generará cadenas de bits como index para almacenar los registros dentro de los archivos.
+La técnica de extendible hash corresponde a una técniga de hashing dinámica, en el que los registros se almacenan dentro de buckets, y estos se almacenan en un archivo de datos. Adicionalemnte, existe un archivo de índices en el que se encontrará, de manera estática, a todos los índices correspondientes con la máxima altura de la estructura, por ejemplo, si la altura máxima es 3 entonces tendremos 2^3 registros. Para gestionar el espacio liberado por la eliminación de registros y buckets, implementaremos la estrategia FreeList en modo LIFO, para lo cual necesitamos guardar un puntero al inicio del archivo de datos. La función hash que utilizaremos será la proporcionada por el STL en la librería functional, además de una operación para extraer los bits necesarios. Para esta técnica, definimos dos parámetros, el factor de bloque, que determina la máxima cantidad de registros por bucket, y la altura máxima de la estructura.
+
+La clase implementada debe leer los índices en su constructor (si el archivo de índices está vacío, inicializarlo de acuerdo a la altura máxima) y almacenar dos mapas, uno donde se guarda la posición del bucket al que apunta, y el otro guarda la cantidad de registros asociados al índice. Inicialmente solo hay 2 buckets, uno para los que terminan en cero y otro para los que terminan en 1, ambos con una altura local de 1. De la misma forma, al destruir la clase, debemos regresar los índices a su archivo, así como el puntero del freeList.
+
+### Manejo de memoria secundaria
+<!--- >Manejo de memoria secundaria <--->
+En el archivo "index" se encuentran todos los índices de la estructura, el cual contiene 2^D índices, los cuales apuntan a algún bucket en el archivo de datos. En el archivo de datos tenemos a los buckets, los cuales contienen a los registros, cuya cantidad máxima es un parámetro. Cada bucket tiene un ‘d’ (altura) local. El costo de accesos a memoria de las operaciones se define de acuerdo a las lecturas y escrituras de los buckets en el archivo de datos.
 
 <!--- >Funcionamiento de inserción, eliminación y búsqueda <--->
-Dentro de las funciones tales como inserción, eliminación y búsqueda, su funcionamiento es el siguiente.
+### Inserción
+Al insertar un registro, evaluamos el bucket al que deben ir a través de la función hash. Si hay espacio insertamos, de lo contrario, si la altura local es menor a la máxima, entonces hacemos una división del bucket y reacomodamos los registros hasta que el nuevo pueda insertarse. Si ya tiene la máxima altura, entonces creamos linked buckets. La creación de nuevos buckets será en los espacios dejados por los eliminados anteriormente, si es que el puntero de freeList apunta a alguno.
 
-<!--- >Manejo de memoria secundaria <--->
-En el archivo "index" se encuentran todos los índices de la estructura, el cual contiene 2^D índices, los cuales apuntan a algún bucket en el archivo de datos. En el archivo de datos, tenemos a los buckets, teniendo en cada uno, un número de registros determinado como máximo, y un número de registros insertados. Cada bucket tiene un ‘D’(Profundidad) local. Cuando se sobrepasa su cantidad máxima de registros del bucket, se divide el índice, se crea un nuevo bucket y se aumenta en uno la profundidad local. Si su profundidad es igual al ‘D’ determinado, entonces se crea un linked bucket, después se consulta al Freelist para verificar si hay buckets eliminados para agregar el linked bucket en dicho espacio, caso contrario se escribe al final del archivo linkeando con el bucket correspondiente.
+Para la inserción de un vector de registros, aplicamos la función insert a cada uno.
 
-Además, al eliminar registros, se verifica si se vacía el bucket al eliminar el registro. Además, se verifica si se pueden unir los buckets, en ese caso se hace la unión y se disminuye la profundidad local. Por otro lado, los buckets eliminados se registran con un FreeList, con estrategia LIFO. Por ultimo, la cabecera del FreeList se guarda al inicio del archivo de índices.
+### Búsqueda
+Evaluamos la función hash en la key a buscar, y buscamos en el bucket principal (bucket apuntado por algún índice), sino está, buscamos en los buckets linkeados si tiene. De lo contrario, no existe.
+
+Para una búsqueda por rango, debemos buscar en todos los registros. Es la operación más ineficiente.
+
+### Eliminación
+Verificamos si existe el registro, y ubicamos el bucket donde se encuentra. Si el bucket tiene links hacia otros, entonces traemos un registro del último bucket linkeado para completarlo. Si se queda vacío evaluamos una eliminación de bucket. Si es uno de los buckets principales (a los que apuntan los índices) evaluamos una fusión de buckets hermanos, dependiendo de la cantidad total de registros entre ambos. En las eliminaciones de buckets, actualizamos el freeList.
  
 ## **Sequential File**
 <!--- >Explicación de la técnica <--->
-Para esta técnica, dentro de la organización de los registros, estos se mantendran ordenados por una key dentro del archivo, por lo que en el caso de que no se encuentren el que se insertaron, se linkea cada registro con el siguiente correspondiente. Además, se tiene un archivo auxiliar en el cual se ingresan los registros que no se pueden escribir al final del archivo debido al como está ordenando el archivo.
-<!--- >Funcionamiento de inserción, eliminación y búsqueda <--->
-Dentro de las funciones tales como inserción, eliminación y búsqueda, su funcionamiento es el siguiente.
+Esta técnica mantiene a la mayoría de registros ordenados en la región de datos, y utiliza una región auxiliar para insertar registros que no entren en la región de datos. Como es necesario mantener un orden, los registros tienen un parámetro next para apuntar al siguiente y un carácter para indicar la región. Se definen dos parámetros, uno para evaluar el tamaño máximo de la región auxiliar, y otro que evalúa la cantidad máxima de eliminados. Si se alcanza el valor de algún parámetro, es necesario reorganizar el archivo, es decir, llevar a todos los registros de forma ordenada a la región de datos. Esto se realiza con el fin de mantener una consistencia en los datos y en los archivos.
 
+### Manejo de memoria secundaria
 <!--- >Manejo de memoria secundaria <--->
-Al tener el archivo de registros ordenado. Existe un archivo auxiliar en el que se guardan registros que se deben insertar en el principal pero no tienen espacio, ya que es ordenado y no se realiza la reconstrucción del mismo para evitar que la complejidad de la inserción incremente acorde a la cantidad de registros en el archivo principal. Cada registro tiene un puntero hacia el siguiente registro, el cual puede estar en el principal o auxiliar. Cuando la cantidad de inserciones en el archivo auxiliar, o eliminaciones en total alcanza un límite, se realiza un refactor para reordenar todos los registros en el archivo principal.
+El método usa dos archivos, uno para datos, donde están datos ordenados, y otro auxiliar, donde están datos que deberían estar en la otra región, pero no tuvieron espacio de inserción. Cada registro tiene un puntero hacia el siguiente registro, el cual puede estar en el principal o auxiliar. Cuando la cantidad de inserciones en el archivo auxiliar, o eliminaciones en total alcanza un límite, se realiza un refactor para reordenar todos los registros en el archivo principal. Además de la función de refactor, tenemos una función interna que realiza una búsqueda binaria en el archivo de datos, y devuelve una posición. El costo de accesos a memoria de las operaciones se define de acuerdo a las lecturas y escrituras de los regisros tanto en el archivo principal como en el auxiliar.
 
-Por lo que, la inserción se debe de realizar primero verificando que el archivo principal no tiene algún espacio vacío para insertar el nuevo registro, en el caso de que si disponga se agrega el registro, por el contrario de que no exista espacio libre, se inserta en el archivo auxiliar, y para ambos casos se actualizan los punteros para finalizar la función.
+<!--- >Funcionamiento de inserción, eliminación y búsqueda <--->
+### Inserción
+Se realiza la búsqueda binaria de la posición donde debe insertarse, y, si tiene espacio, entonces se inserta en el archivo de datos, de lo contrario, se inserta en la región auxiliar y se configuran los punteros. Cuando se alcanza el tamaño máximo de la región auxiliar, se realiza una refactorización para ordenar todos los registros en el archivo principal. 
 
-Asimismo, al momento de realizar la eliminación de un registro, lo unico que cambia son los punteros de los registros, liberando espacio para que un nuevo registro sea insertado directamente al archivo principal.
+Para la inserción de un vector de registros, se ordena previamente el vector y luego se llama a la función insert por cada elemento.
+
+### Búsqueda
+Se realiza la búsqueda binaria de la posición donde debería estar el registro, y devolver en caso se encuentre ahí. De lo contrario, buscamos linealmente en la zona auxiliar si es que el registro encontrado la apunta. Sino, no se encuentra en la base de datos.
+
+Para la búsqueda por rango, buscamos la primera key, y luego buscamos linealmente hasta llegar a la segunda key.
+
+### Eliminación
+Buscamos el registro y configuramos los punteros. Es necesario además, buscar al registro que apunta al registro a eliminar para configurar los punteros. Si se llega a una máxima cantidad de eliminaciones, se reorganizan los archivos.
 
 
 # **Resultados**
@@ -90,6 +113,8 @@ Tiempo medido en segundos
 | Secuencial | 0,000194 | 0,000195 | 0,000203 | 0,000216 | 0,000241 | 
 | Extendible Hash | 0,000181 | 0,000182 | 0,000182 | 0,000198 | 0,000209 |
 
+Además, se midieron los tiempos para la búsqueda por rango.
+
 ### Búsqueda por rango
 
 | Técnica | | | | | |
@@ -99,7 +124,7 @@ Tiempo medido en segundos
 | Extendible Hash | 0,002442 | 0,003149 | 0,003955 | 0,005072 | 0,005527 |
 
 ## Accesos a memoria secundaria
-Para obtener los accesos a memoria secundaria dentro de las funciones especificadas, se contará los "reads" y "writes" que haga la función en su tiempo de ejecución.
+Para obtener los accesos a memoria secundaria dentro de las funciones especificadas, se contarán los "read" y "write" que haga la función en su tiempo de ejecución.
 
 ### Inserción de registros
 
@@ -131,17 +156,16 @@ Para obtener los accesos a memoria secundaria dentro de las funciones especifica
 <img src="/imagenes/acceso_bregistro.JPG" width="600">
 
 ## Discusión y análisis de resultados experimentales
-Los resultados experimentales muestran que entre ambas técnicas de almacenamiento de datos, existen diferencias significativas en sus tiempos de ejecución acorde a la funcionalidad que se requiera.
-Por un lado, tenemos que el “Extendible Hash” tiene una diferencia significativa de tiempo en comparación con el “Sequential File”, esto se debe a que la función hash puede crear “buckets” que no se llenen de datos, cuando se tiene a otros con muchos “linked buckets”, incrementando el tiempo de ejecución mientras más datos se inserten a la vez. Por lo que, el “Sequential File” muestra un mejor rendimiento en este aspecto, porque los archivos son ordenados antes de ser escritos, y no se separan espacios innecesarios al momento de escribir los registros.
+Los resultados experimentales muestran que entre ambas técnicas de almacenamiento de datos, existen diferencias, algunas significativas, entre sus tiempos de ejecución y cantidad de accesos a memoria secundaria para una cantidad de registros variable.
 
-Asimismo, cuando es únicamente un solo registro el que se ingresa, la técnica de “Extendible Hash” muestra un mejor rendimiento que el “Sequential File” porque este último, al estar escrito de forma secuencial y ordenada, en el peor de los casos se tiene que ir al final del archivo, que por el contrario dentro de la otra técnica, al generarse la llave, es escrito en los “buckets” creados o por último se inserta uno nuevo, por lo que su complejidad disminuye por su método de acceso. Por lo que, esto mismo se ve reflejado en la búsqueda de un solo registro, porque que tendrían un comportamiento similar en lo que confiere a la lectura del archivo; que para el caso del “Extendible Hash” se va volviendo mucho más eficiente cuando la cantidad de datos incrementa, contrastando con la otra técnica que tiene un comportamiento contrario en cuanto a su tiempo de ejecución.
+En cuanto a la inserción de los registros, el tiempo de ejecución es similar en ambas técnicas. La mayor complejidad en el Extendible Hashing se da en la creación de nuevos buckets para los registros, mientras que, en el Sequential File, se da en la reorganización de archivos cuando la región auxiliar alcanza su máxmimo tamaño. Si realizamos un análisis cuando insertamos un solo registro, la técnica de Extendible Hash tendría un mejor rendimiento que el Sequential File, esto debido a que en el Sequential File, siempre se necesita de una búsqueda binaria para ubicar la posición, además de que, si se inserta en la zona auxiliar y se llena, se requiere de una reorganización total. Mientras que, en el Extendible Hashing, al generarse la llave con la función hash, se guarda en su bucket correspondiente o, en el peor caso, se crea uno nuevo. Por otro lado, la cantidad de accesos a memoria secundaria es significativamente mayor en el Sequential por la búsqueda binaria en el archivo de datos y por la búsqueda lineal en la zona auxiliar, mientras que la otra técnica se dirige a los buckets directamente.
 
-Por último, encontramos que las búsquedas por rango, son más eficientes dentro del “Sequential File” por su misma organización al momento de escribirse en los archivos, ya que al estar ordenado el acceso es directo. Por el contrario, en la otra técnica se tienen que hacer diversos accesos a distintos “buckets” por lo que ralentiza este tipo de búsqueda.
+Con respecto a la búsqueda de un registro, la técnica Sequential File tiene un mayor tiempo de ejecución por las búsquedas binaria y lineal que realiza. Además de esto, los accesos a memoria son mucho más bajos (1 en todos los casos) en el Extendible Hashing, ya que la altura máxima permite distribuir eficientemente los registros en los buckets.
 
-En segundo lugar, encontramos que los accesos a memoria para la inserción y búsqueda, la técnica de “Extendible Hash” hace un menor uso de esta, llegando al caso de la búsqueda, que para cualquier cantidad de datos solo requiere de un acceso, por lo que para este apartado dicha técnica muestra una ventaja muy notoria en contra del “Sequential File”.
+Por último, encontramos que las búsquedas por rango, son más eficientes dentro del Sequential File por su misma organización al momento de escribirse en los archivos, ya que al estar ordenado el acceso es directo. Por el contrario, en la otra técnica, se tienen que hacer una búsqueda en todos los buckets ya que no existe una noción de orden.
 
 # **Pruebas**
 
-Las pruebas son con el siguiente video (darle click a la imagen).
+Las pruebas se realizan en el siguiente video (darle click a la imagen).
 
 [![Pruebas del sistema de almacenamiento](/imagenes/icono.jpeg)](https://www.youtube.com/watch?v=cUdKwrsEEWU)
