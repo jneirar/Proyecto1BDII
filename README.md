@@ -103,6 +103,13 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 ## Accesos a memoria secundaria
 
 ## Discusión y análisis de resultados experimentales
+Los resultados experimentales muestran que entre ambas técnicas de almacenamiento de datos, existen diferencias significativas en sus tiempos de ejecución acorde a la funcionalidad que se requiera.
+Por un lado, tenemos que el “Extendible Hash” tiene una diferencia significativa de tiempo en comparación con el “Sequential File”, esto se debe a que la función hash puede crear “buckets” que no se llenen de datos, cuando se tiene a otros con muchos “linked buckets”, incrementando el tiempo de ejecución mientras más datos se inserten a la vez. Por lo que, el “Sequential File” muestra un mejor rendimiento en este aspecto, porque los archivos son ordenados antes de ser escritos, y no se separan espacios innecesarios al momento de escribir los registros.
+
+Asimismo, cuando es únicamente un solo registro el que se ingresa, la técnica de “Extendible Hash” muestra un mejor rendimiento que el “Sequential File” porque este último, al estar escrito de forma secuencial y ordenada, en el peor de los casos se tiene que ir al final del archivo, que por el contrario dentro de la otra técnica, al generarse la llave, es escrito en los “buckets” creados o por último se inserta uno nuevo, por lo que su complejidad disminuye por su método de acceso. Por lo que, esto mismo se ve reflejado en la búsqueda de un solo registro, porque que tendrían un comportamiento similar en lo que confiere a la lectura del archivo; que para el caso del “Extendible Hash” se va volviendo mucho más eficiente cuando la cantidad de datos incrementa, contrastando con la otra técnica que tiene un comportamiento contrario en cuanto a su tiempo de ejecución.
+
+Por último, encontramos que las búsquedas por rango, son más eficientes dentro del “Sequential File” por su misma organización al momento de escribirse en los archivos, ya que al estar ordenado el acceso es directo. Por el contrario, en la otra técnica se tienen que hacer diversos accesos a distintos “buckets” por lo que ralentiza este tipo de búsqueda.
+
 
 
 # **Pruebas**
