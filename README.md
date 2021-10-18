@@ -60,6 +60,11 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 
 
 # **Resultados**
+Para la experimentación se tuvo en cuenta los siguiente parámetros
+```C++
+   //secuencial
+   #define 
+```
 
 ## Tiempo de Ejecución
 Tiempo medido en segundos
