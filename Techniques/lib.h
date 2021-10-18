@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <functional>
 #include <bitset>
+#include <iomanip>
 
 #include <sys/stat.h>
 
@@ -32,12 +33,12 @@
 //#define isfnopen if(fn.is_open())
 
 //secuential:
-#define SEQ_MAX_SIZE_OF_AUX_FILE 5
-#define SEQ_MAX_ERASED_RECORDS 3
+#define SEQ_MAX_SIZE_OF_AUX_FILE 50
+#define SEQ_MAX_ERASED_RECORDS 100
 
 //hash:
-#define HASH_BUCKET_SIZE 3 //fb
-#define HASH_HEIGHT 3      //D
+#define HASH_BUCKET_SIZE 10 //fb
+#define HASH_HEIGHT 10      //D
 
 using namespace std;
 
@@ -94,11 +95,7 @@ void init()
 {
     cleanFile("data.dat");
     cleanFile("daux.dat");
-}
-
-void init2()
-{
-    cleanFile("data.dat");
+    cleanFile("dataHash.dat");
     cleanFile("index.dat");
 }
 
@@ -117,6 +114,20 @@ string local_trim(string cad, long height)
     for (int i = cad.size() - height; i < cad.size(); i++)
         new_cad += cad[i];
     return new_cad;
+}
+std::string toLower(std::string s)
+{
+    std::transform(s.begin(), s.end(), s.begin(),
+                   [](unsigned char c)
+                   { return std::tolower(c); });
+    s[0] = s[0] - 32;
+    return s;
+}
+void dump()
+{
+    string dump;
+    cout << "\n\nPresione cualquier tecla y enter...";
+    cin >> dump;
 }
 
 #endif //LIB.H
