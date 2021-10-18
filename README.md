@@ -58,7 +58,7 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 Tiempo que toma cada estructura en realizar las siguiente operaciones
 
 | Operación | Secuencial | Extendible Hash |
-| --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- |
 | Inserción de registros en cantidad |  |  |
 | Inserción de un solo registro |  |  |
 | Búsqueda de un registro |  |  |
