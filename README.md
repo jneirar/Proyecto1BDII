@@ -10,12 +10,12 @@
 ## **Tabla de contenido**
 * [Introducción](#introducción)
 * [Técnicas a usar en el proyecto](#técnicas-a-usar)
-  * [Extendible Hash](##extendible-hash)
-  * [Sequential File](##sequential-file)
+  * [Extendible Hash](#extendible-hash)
+  * [Sequential File](#sequential-file)
 * [Resultados](#resultados)
-  * [Tiempo de ejecución](##tiempo-de-ejecución)
-  * [Gráficos de comparación](##gráficos-de-comparación)
-  * [Discusión y análisis de resultados experimentales](##discusión-y-análisis-de-resultados-experimentales)
+  * [Tiempo de ejecución](#tiempo-de-ejecución)
+  * [Gráficos de comparación](#gráficos-de-comparación)
+  * [Discusión y análisis de resultados experimentales](#discusión-y-análisis-de-resultados-experimentales)
 * [Pruebas y video del proyecto](#pruebas)
 # **Introducción**
 
@@ -28,8 +28,8 @@ Para el dominio de datos...
 ## **Resultados esperados**
 Los resultados esperados son, un SGDB funcional y que mediante las técnicas implementadas sea eficiente, además de poder mostrarlo en una GUI amigable para los usuarios.
 # **Técnicas a usar**
-- [Extendible Hash](##extendible-hash)
-- [Sequential File](##sequential-file)
+- [Extendible Hash](#extendible-hash)
+- [Sequential File](#sequential-file)
   
 
 ## **Extendible Hash**
