@@ -95,7 +95,7 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 
 <img src="/imagenes/insercion_cantidad.JPG" width="600">
 <img src="/imagenes/busqueda_registro.jpeg" width="600">
-<img src="/imagenes/busqueda_un.JPG" width="600">
+<img src="/imagenesbusqueda_registro.jpeg" width="600">
 <img src="/imagenes/rango_1.JPG" width="600">
 
 
