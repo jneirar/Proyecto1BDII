@@ -67,7 +67,7 @@ Tiempo medido en segundos
 ### Inserción de registros
 
 | Técnica | | | | | |
-| | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
+|:-------------------: | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
 | --- | --- | --- | --- | --- | --- |
 | Secuencial | 0,038367 | 0,091864 | 0,125376 |0,167607 | 0,21283 | 
 | Extendible Hash | 0,037854 | 0,080746 | 0,130043 | 0,190775 | 0,224702 |
@@ -83,7 +83,7 @@ Tiempo medido en segundos
 ### Búsqueda por rango
 
 | Técnica | | | | | |
-| | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
+|:-------------------: | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
 | --- | --- | --- | --- | --- | --- |
 | Secuencial | 0,038367 | 0,091864 | 0,125376 |0,167607 | 0,21283 | 
 | Extendible Hash | 0,037854 | 0,080746 | 0,130043 | 0,190775 | 0,224702 |
@@ -94,7 +94,7 @@ Para obtener los accesos a memoria secundaria dentro de las funciones especifica
 ### Inserción de registros
 
 | Técnica | | | | | |
-| | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
+|:-------------------: | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
 | --- | --- | --- | --- | --- | --- |
 | Secuencial | 2491 | 4991 | 7491 | 9991 | 11996 | 
 | Extendible Hash | 1184 | 2376 | 4235 | 5735 | 7538 |
@@ -102,7 +102,7 @@ Para obtener los accesos a memoria secundaria dentro de las funciones especifica
 ### Busqueda de un registro
 
 | Técnica | | | | | |
-| | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
+|:-------------------: | 500 registros | 1000 registros | 1500 registros | 2000 registros | 2500 registros |
 | --- | --- | --- | --- | --- | --- |
 | Secuencial | 12 | 13 | 14 | 14 | 14 | 
 | Extendible Hash | 1 | 1 | 1 | 1 | 1 |
