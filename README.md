@@ -55,15 +55,23 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 
 # **Resultados**
 
-Tiempo que toma cada estructura en realizar las siguiente operaciones
+## Tiempo de Ejecución
+
+### Para 2500 registros
 
 | Operación | Secuencial | Extendible Hash |
 | --- | --- | --- |
-| Inserción de registros en cantidad |  |  |
-| Inserción de un solo registro |  |  |
-| Búsqueda de un registro |  |  |
-| Búsqueda por rango|  |  |
+| Inserción de registros en cantidad | 0.073335 seg | 0.200467 |
+| Inserción de un solo registro | 0.000285 seg al final y 0.000353 seg con uso del archivo auxiliar  | 0.000517 seg una key nueva y 0.000194 seg si es repetida y no se inserta |
+| Búsqueda de un registro | 0.000287 seg | 0.000205 seg |
+| Búsqueda por rango| 0.005138 seg  | 0.006695 seg |
 
-Tomar en cuenta que para el Secuencial se insertaron 800 datos y para el Extendible Hash 2580
+
+### Para 1000 registros
+
+
+### Para 1000 registros
+
+## Accesos a memoria secundaria
 
 # **Pruebas**
