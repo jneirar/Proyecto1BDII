@@ -101,7 +101,7 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 
 
 ## Accesos a memoria secundaria
-Para obtener los accesos a memoria secundaria, dentro de las funciones especificadas se contará los "reads" y "writes" que haga la función en su tiempo de ejecución.
+Para obtener los accesos a memoria secundaria dentro de las funciones especificadas, se contará los "reads" y "writes" que haga la función en su tiempo de ejecución.
 
 ## Discusión y análisis de resultados experimentales
 Los resultados experimentales muestran que entre ambas técnicas de almacenamiento de datos, existen diferencias significativas en sus tiempos de ejecución acorde a la funcionalidad que se requiera.
