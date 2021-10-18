@@ -55,4 +55,15 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 
 # **Resultados**
 
+Tiempo que toma cada estructura en realizar las siguiente operaciones
+
+| Operación | Secuencial | Extendible Hash |
+| --- | --- | --- | --- | --- | --- | --- |
+| Inserción de registros en cantidad |  |  |
+| Inserción de un solo registro |  |  |
+| Búsqueda de un registro |  |  |
+| Búsqueda por rango|  |  |
+
+Tomar en cuenta que para el Secuencial se insertaron 800 datos y para el Extendible Hash 2580
+
 # **Pruebas**
