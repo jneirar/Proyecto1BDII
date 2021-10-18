@@ -87,7 +87,7 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 
 ### Gráficos
 
-<img src="../imagenes/insercion_cantidad.JPG" width="200">
+<img src="/imagenes/insercion_cantidad.JPG" width="200">
 
 
 ## Accesos a memoria secundaria
