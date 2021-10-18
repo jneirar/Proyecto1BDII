@@ -37,8 +37,8 @@
 #define SEQ_MAX_ERASED_RECORDS 100
 
 //hash:
-#define HASH_BUCKET_SIZE 10 //fb
-#define HASH_HEIGHT 10      //D
+#define HASH_BUCKET_SIZE 3 //fb
+#define HASH_HEIGHT 3      //D
 
 using namespace std;
 

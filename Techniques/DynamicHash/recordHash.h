@@ -42,14 +42,19 @@ public:
         strcpy(this->country, country.c_str());
         this->stars = stars;
     }
+    void setData(TKey key)
+    {
+        this->key = key;
+        string brand = "brand", style = "style", country = "country";
+        strcpy(this->brand, brand.c_str());
+        strcpy(this->style, style.c_str());
+        strcpy(this->country, country.c_str());
+        this->stars = 0.0;
+    }
 
     void showData()
     {
         cout << "\tKey: " << key << "\n";
-        cout << "\tBrand: " << brand << "\n\n";
-        cout << "\tStyle: " << style << "\n\n";
-        cout << "\tCountry: " << country << "\n\n";
-        cout << "\tStars: " << stars << "\n\n";
     }
     TKey getKey()
     {

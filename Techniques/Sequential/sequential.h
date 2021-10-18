@@ -110,63 +110,6 @@ private:
             perror("Error renaming file");
     }
 
-    void refactor2()
-    {
-        //TODO: Quitar
-        //Sacar todos los registros y guardar ordenados
-        fopen(fileName);
-        isfopen
-        {
-            faopen(auxName);
-            isfaopen
-            {
-                vector<TRecord> vtmp;
-                TRecord tmp;
-                f.seekg(0, ios::beg);
-                read(f, tmp);
-                vtmp.push_back(tmp);
-                long next = tmp.getNext();
-                char file = tmp.getFile();
-
-                while (next != -1)
-                {
-                    if (file == 'd')
-                    {
-                        f.seekg(next, ios::beg);
-                        read(f, tmp);
-                    }
-                    else if (file == 'a')
-                    {
-                        fa.seekg(next, ios::beg);
-                        read(fa, tmp);
-                    }
-                    else
-                    {
-                        cout << "Algó falló\n";
-                        f.close();
-                        fa.close();
-                        return;
-                    }
-                    vtmp.push_back(tmp);
-                    next = tmp.getNext();
-                    file = tmp.getFile();
-                }
-                fa.close();
-                fa.open(auxName, std::ofstream::out | std::ofstream::trunc);
-                fa.close();
-                f.close();
-                f.open(fileName, std::ofstream::out | std::ofstream::trunc);
-                f.close();
-                sizeAux = 0;
-                sizeData = 0;
-                insertAll(vtmp);
-            }
-            else cout << "SequentialError al abrir aux en refact\n";
-            f.close();
-        }
-        else cout << "SequentialError al abrir data en refact\n";
-    }
-
     long binarySearch(string key, int &accesos)
     {
         long res = 0;
@@ -248,7 +191,7 @@ public:
 
     ~Sequential()
     {
-        //refactor();
+        refactor();
     }
 
     int insertAll(vector<TRecord> records)

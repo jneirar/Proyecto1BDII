@@ -8,10 +8,5 @@ int main()
     Sequential<Record<char[25]>, string> seq("data", "daux");
     ExtendibleHash<int> extendibleHash("dataHash", "index");
     menu_principal(seq, extendibleHash);
-    /*string A = "a";
-    string B = "B";
-    if(A > B) cout << "Mayor\n";
-    else cout << "Menor\n";
-*/
     return 0;
 }

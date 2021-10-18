@@ -42,7 +42,7 @@ public:
         isfopen
         {
             f.seekg(0, ios::beg);
-            write(f, freeListBucket);
+            read(f, freeListBucket);
             f.close();
         }
         else cout << "Hash error al abrir data en constructor para leer freelist\n";
@@ -51,6 +51,14 @@ public:
     ~ExtendibleHash()
     {
         writeIndex();
+        fopen(fileName);
+        isfopen
+        {
+            f.seekp(0, ios::beg);
+            write(f, freeListBucket);
+            f.close();
+        }
+        else cout << "Hash error al abrir data en constructor para guardar freelist\n";
     }
     void showAll()
     {
@@ -222,14 +230,6 @@ public:
                     while (1)
                     {
                         divideBucket(f, bucket, pos, accesos);
-                        /*
-                        cout << "\n---------------\n";
-                        for(long i = 0; i < (1 << HASH_HEIGHT); i++){
-                            string cad = bitset<HASH_HEIGHT>(i).to_string();
-                            cout << cad << "\t" << index[cad] << "\n";
-                        }
-                        cout << "\n---------------\n";
-                        */
                         pos = index[cad];
                         f.seekg(pos, ios::beg);
                         read(f, bucket);
