@@ -62,8 +62,13 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 # **Resultados**
 Para la experimentación se tuvo en cuenta los siguiente parámetros
 ```C++
-   //secuencial
-   #define 
+   //secuencial:
+   #define SEQ_MAX_SIZE_OF_AUX_FILE 50
+   #define SEQ_MAX_ERASED_RECORDS 100
+   
+   //hash:
+   #define HASH_BUCKET_SIZE 10 //fb
+   #define HASH_HEIGHT 10 //D
 ```
 
 ## Tiempo de Ejecución
@@ -133,6 +138,10 @@ Asimismo, cuando es únicamente un solo registro el que se ingresa, la técnica 
 
 Por último, encontramos que las búsquedas por rango, son más eficientes dentro del “Sequential File” por su misma organización al momento de escribirse en los archivos, ya que al estar ordenado el acceso es directo. Por el contrario, en la otra técnica se tienen que hacer diversos accesos a distintos “buckets” por lo que ralentiza este tipo de búsqueda.
 
-
+En segundo lugar, encontramos que los accesos a memoria para la inserción y búsqueda, la técnica de “Extendible Hash” hace un menor uso de esta, llegando al caso de la búsqueda, que para cualquier cantidad de datos solo requiere de un acceso, por lo que para este apartado dicha técnica muestra una ventaja muy notoria en contra del “Sequential File”.
 
 # **Pruebas**
+
+Las pruebas son con el siguiente video.
+
+[![Pruebas del sistema de almacenamiento]](https://www.youtube.com/watch?v=cUdKwrsEEWU)
