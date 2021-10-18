@@ -14,7 +14,7 @@ private:
 
     const long sizeRecord = sizeof(TRecord);
 
-    void refactor()
+    void refactor(int &accesos)
     {
         string newName = "temp.dat";
         fopen(fileName);
@@ -29,6 +29,7 @@ private:
                     TRecord record;
                     f.seekg(0, ios::beg);
                     read(f, record);
+                    accesos++;
 
                     long next = 0;
                     char file = 'd';
@@ -40,12 +41,14 @@ private:
                     {
                         f.seekg(next, ios::beg);
                         read(f, record);
+                        accesos++;
                         next = record.getNext();
                         file = record.getFile();
 
                         record.setNext(fn_pos + sizeRecord, 'd');
                         fn.seekp(fn_pos, ios::beg);
                         write(fn, record);
+                        accesos++;
                         sizeData++;
                         fn_pos += sizeRecord;
 
@@ -57,6 +60,7 @@ private:
                             {
                                 fa.seekg(next, ios::beg);
                                 read(fa, record);
+                                accesos++;
                                 records_in_aux.push_back(record);
                                 next = record.getNext();
                                 file = record.getFile();
@@ -67,6 +71,7 @@ private:
                                 rec.setNext(fn_pos + sizeRecord, 'd');
                                 fn.seekp(fn_pos, ios::beg);
                                 write(fn, rec);
+                                accesos++;
                                 sizeData++;
                                 fn_pos += sizeRecord;
                             }
@@ -76,9 +81,11 @@ private:
                     //Cambiar el next del último a -1
                     fn.seekg(sizeRecord * (sizeData - 1), ios::beg);
                     read(fn, record);
+                    accesos++;
                     record.setNext(-1, 'd');
                     fn.seekp(sizeRecord * (sizeData - 1), ios::beg);
                     write(fn, record);
+                    accesos++;
                     fn.close();
                 }
                 else cout << "SequentialError al abrir newFile en refact\n";
@@ -160,7 +167,7 @@ private:
         else cout << "SequentialError al abrir data en refact\n";
     }
 
-    long binarySearch(string key)
+    long binarySearch(string key, int &accesos)
     {
         long res = 0;
         fopen(fileName);
@@ -170,6 +177,7 @@ private:
             //Menor
             f.seekg(0, ios::beg);
             read(f, tmp);
+            accesos++;
             if (key <= tmp.getKey())
             {
                 f.close();
@@ -178,6 +186,7 @@ private:
             //Mayor
             f.seekg((sizeData - 1) * sizeRecord, ios::beg);
             read(f, tmp);
+            accesos++;
             if (key >= tmp.getKey())
             {
                 f.close();
@@ -192,6 +201,7 @@ private:
                     break;
                 f.seekg(mi * sizeRecord, ios::beg);
                 read(f, tmp);
+                accesos++;
                 if (key == tmp.getKey())
                     break;
                 else if (key < tmp.getKey())
@@ -221,9 +231,9 @@ private:
         return 0;
     }
 
-    long insideSearch(string key)
+    long insideSearch(string key, int &accesos)
     {
-        return binarySearch(key);
+        return binarySearch(key, accesos);
         //return linealSearch(key);
     }
 
@@ -241,19 +251,19 @@ public:
         //refactor();
     }
 
-    void insertAll(vector<TRecord> records)
+    int insertAll(vector<TRecord> records)
     {
+        int accesos = 0;
         sort(records.begin(), records.end(), comp<TRecord>);
         for (TRecord record : records)
         {
-            insert(record);
+            insert(record, accesos);
         }
+        return accesos;
     }
 
     void showAll()
     {
-        cout << "SizeData: " << sizeData << "\n";
-        cout << "SizeAux: " << sizeAux << "\n";
         fopen(fileName);
         isfopen
         {
@@ -295,6 +305,9 @@ public:
                     file = tmp.getFile();
                 }
                 fa.close();
+                cout << "\n\n----- File Size -----\n\n";
+                cout << "SizeData: " << sizeData << "\n";
+                cout << "SizeAux: " << sizeAux << "\n";
             }
             else cout << "SequentialError al abrir aux en showAll\n";
             f.close();
@@ -302,7 +315,7 @@ public:
         else cout << "SequentialError al abrir data en showAll\n";
     }
 
-    void insert(TRecord &record)
+    void insert(TRecord &record, int &accesos)
     {
         record.setNext(-1, 'd');
         if (sizeData == 0)
@@ -312,6 +325,7 @@ public:
             {
                 f.seekp(0, ios::beg);
                 write(f, record);
+                accesos++;
                 sizeData++;
                 f.close();
                 return;
@@ -319,13 +333,14 @@ public:
             else cout << "SequentialError al abrir archivo data en add, sizeData = 0\n";
         }
         //Hay datos, ubicar la posicion
-        long pos = insideSearch(record.getKey());
+        long pos = insideSearch(record.getKey(), accesos);
         fopen(fileName);
         isfopen
         {
             TRecord tmp;
             f.seekg(pos);
             read(f, tmp);
+            accesos++;
 
             if (pos == 0 && record.getKey() < tmp.getKey())
             {
@@ -337,8 +352,10 @@ public:
                     f.seekp(finalPos, ios::end);
                     record.setNext(finalPos, 'd');
                     write(f, tmp);
+                    accesos++;
                     f.seekp(pos, ios::beg);
                     write(f, record);
+                    accesos++;
                     sizeData++;
                 }
                 else
@@ -350,16 +367,18 @@ public:
                         auto finalPosition = fa.tellp();
                         record.setNext(finalPosition, 'a');
                         write(fa, tmp);
+                        accesos++;
 
                         f.seekp(pos, ios::beg);
                         write(f, record);
+                        accesos++;
 
                         sizeAux++;
                         fa.close();
                         if (sizeAux == SEQ_MAX_SIZE_OF_AUX_FILE)
                         {
                             f.close();
-                            refactor();
+                            refactor(accesos);
                         }
                     }
                     else cout << "SequentialError al abrir archivo aux en add record < pos0\n";
@@ -373,10 +392,12 @@ public:
                     f.seekp(0, ios::end);
                     auto finalPosition = f.tellp();
                     write(f, record);
+                    accesos++;
 
                     tmp.setNext(finalPosition, 'd');
                     f.seekp(pos);
                     write(f, tmp);
+                    accesos++;
 
                     sizeData++;
                 }
@@ -386,14 +407,17 @@ public:
                     TRecord tmpNext;
                     f.seekg(pos + sizeData);
                     read(f, tmpNext);
+                    accesos++;
                     if (tmpNext.getNext() == -2)
                     {
                         record.setNext(tmp.getNext(), tmp.getFile());
                         tmp.setNext(pos + sizeData, 'd');
                         f.seekp(pos);
                         write(f, tmp);
+                        accesos++;
                         f.seekp(pos + sizeData);
                         write(f, record);
+                        accesos++;
                         sizeData++;
                     }
                     else
@@ -407,14 +431,16 @@ public:
                             record.setNext(tmp.getNext(), tmp.getFile());
                             tmp.setNext(finalPosition, 'a');
                             write(fa, record);
+                            accesos++;
                             f.seekp(pos, ios::beg);
                             write(f, tmp);
+                            accesos++;
                             sizeAux++;
                             fa.close();
                             if (sizeAux == SEQ_MAX_SIZE_OF_AUX_FILE)
                             {
                                 f.close();
-                                refactor();
+                                refactor(accesos);
                             }
                         }
                         else cout << "SequentialError al abrir archivo aux en add\n";
@@ -426,15 +452,16 @@ public:
         else cout << "SequentialError al abrir archivo data en add\n";
     }
 
-    TRecord *search(TKey key)
+    TRecord *search(TKey key, int &accesos)
     {
         TRecord *tmp = new TRecord;
-        long pos = insideSearch(key);
+        long pos = insideSearch(key, accesos);
         fopen(fileName);
         isfopen
         {
             f.seekg(pos, ios::beg);
             read(f, *tmp);
+            accesos++;
             if (tmp->getKey() == key)
             {
                 f.close();
@@ -462,6 +489,7 @@ public:
                 {
                     fa.seekg(posAux, ios::beg);
                     read(fa, *tmp);
+                    accesos++;
                     if (tmp->getKey() == key)
                     {
                         fa.close();
@@ -487,10 +515,11 @@ public:
         cout << "No existe el registro\n";
         return nullptr;
     }
-    vector<TRecord> search(int begin, int end)
+    vector<TRecord> search(TKey begin, TKey end)
     {
         vector<TRecord> result;
-        long pos = insideSearch(begin);
+        int x = 0;
+        long pos = insideSearch(begin, x);
         char file;
         TRecord tmp;
         fopen(fileName);
@@ -544,8 +573,8 @@ public:
             cout << "No hay datos\n";
             return false;
         }
-
-        auto record = search(key);
+        int x = 0;
+        auto record = search(key, x);
         if (!record)
             return false;
 
@@ -657,17 +686,69 @@ public:
                 fa.close();
                 //Verificar si requiere reorganización por cantidad de eliminados
                 auto sizeErased = sizeFile<TRecord>(fileName) + sizeFile<TRecord>(auxName) - sizeData - sizeAux;
-                cout << sizeErased << "\n";
+                //cout << sizeErased << "\n";
                 if (sizeErased >= SEQ_MAX_ERASED_RECORDS)
                 {
-                    refactor();
+                    int x;
+                    refactor(x);
                     return true;
                 }
+                return true;
             }
             else cout << "SequentialError al abrir aux en searchRange\n";
         }
         else cout << "SequentialError al abrir dat en searchRange\n";
         return false;
+    }
+
+    void showRecords()
+    {
+        int cont = 1;
+        fopen(fileName);
+        isfopen
+        {
+            faopen(auxName);
+            isfaopen
+            {
+                TRecord tmp;
+                f.seekg(0, ios::beg);
+                read(f, tmp);
+                long next = tmp.getNext();
+                char file = tmp.getFile();
+
+                tmp.showRecord(cont++);
+
+                while (next != -1)
+                {
+                    if (file == 'd')
+                    {
+                        f.seekg(next, ios::beg);
+                        read(f, tmp);
+                    }
+                    else if (file == 'a')
+                    {
+                        fa.seekg(next, ios::beg);
+                        read(fa, tmp);
+                    }
+                    else
+                    {
+                        cout << "Algó falló\n";
+                        f.close();
+                        fa.close();
+                        return;
+                    }
+                    tmp.showRecord(cont++);
+                    next = tmp.getNext();
+                    file = tmp.getFile();
+                }
+                fa.close();
+                cout << setw(5) << "N°" << setw(25) << "Key" << setw(13) << "Type" << setw(15) << "Total" << setw(15) << "Generation" << setw(10) << "Legendary?"
+                     << "\n";
+            }
+            else cout << "SequentialError al abrir aux en showRecords\n";
+            f.close();
+        }
+        else cout << "SequentialError al abrir data en showRecords\n";
     }
 };
 #endif //SEQ.H

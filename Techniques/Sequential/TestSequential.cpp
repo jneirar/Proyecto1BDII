@@ -2,6 +2,8 @@
 
 int main()
 {
+
+    /*
     cout << "---------------Borrando archivos---------------\n";
     init();
     Sequential<Record<char[25]>, string> seq("data", "daux");
@@ -11,7 +13,7 @@ int main()
     seq.insert(r);
     r.setData("Charmeleon", "Fire", 309, 1, false);
     seq.insert(r);
-    seq.showAll();
+    seq.showAll();*/
 
     //r.setData
 

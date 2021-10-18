@@ -92,12 +92,22 @@ public:
         this->file = a.file;
         return *this;
     }
-    bool operator<(const Record &a) { return this->key < a.key; }
-    bool operator>(const Record &a) { return this->key > a.key; }
-    bool operator<=(const Record &a) { return this->key <= a.key; }
-    bool operator>=(const Record &a) { return this->key >= a.key; }
-    bool operator==(const Record &a) { return this->key == a.key; }
-    bool operator!=(const Record &a) { return this->key != a.key; }
+    bool operator<(const Record &a) { return string(this->key) < string(a.key); }
+    bool operator>(const Record &a) { return string(this->key) > string(a.key); }
+    bool operator<=(const Record &a) { return string(this->key) <= string(a.key); }
+    bool operator>=(const Record &a) { return string(this->key) >= string(a.key); }
+    bool operator==(const Record &a) { return string(this->key) == string(a.key); }
+    bool operator!=(const Record &a) { return string(this->key) != string(a.key); }
+
+    void showRecord(int cont)
+    {
+        if (cont == 1)
+        {
+            cout << setw(5) << "N°" << setw(30) << "Key" << setw(13) << "Type" << setw(10) << "Total" << setw(10) << "Generation" << setw(10) << "Legendary?"
+                 << "\n";
+        }
+        cout << setw(5) << cont << setw(30) << key << setw(13) << type << setw(10) << total << setw(10) << generation << setw(10) << legendary << "\n";
+    }
 };
 
 #endif //RECORD.H

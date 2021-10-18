@@ -120,6 +120,13 @@ public:
         return records[0];
         ;
     }
+    void showRecords(int &cont)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            records[i].showRecord(cont++);
+        }
+    }
 };
 
 #endif //BUCKET.H

@@ -22,9 +22,9 @@ private:
     void initIndex();
     void readIndex();
     void writeIndex();
-    void insertInFreeList(fstream &f);
-    void divideBucket(fstream &f, Bucket<TKey> &bucket, long pos);
-    bool exists(TKey key);
+    void insertInFreeList(fstream &f, int &accesos);
+    void divideBucket(fstream &f, Bucket<TKey> &bucket, long pos, int &accesos);
+    bool exists(TKey key, int &accesos);
     bool is_brother(string ref, string bro, long d);
 
 public:
@@ -147,10 +147,18 @@ public:
         }
         else cout << "Hash error al abrir data en showAll\n";
     }
-
-    void insert(RecordHash<TKey> record)
+    int insertAll(vector<RecordHash<TKey>> vrecord)
     {
-        if (exists(record.getKey()))
+        int accesos = 0;
+        for (auto vr : vrecord)
+        {
+            insert(vr, accesos);
+        }
+        return accesos;
+    }
+    void insert(RecordHash<TKey> record, int &accesos)
+    {
+        if (exists(record.getKey(), accesos))
         {
             cout << "Ya existe el registro " << record.getKey() << "\n";
             return;
@@ -163,6 +171,7 @@ public:
             long pos = index[cad];
             f.seekg(pos, ios::beg);
             read(f, bucket);
+            accesos++;
 
             if (bucket.isFull())
             {
@@ -179,6 +188,7 @@ public:
                             break;
                         f.seekg(pos, ios::beg);
                         read(f, bucket);
+                        accesos++;
                     }
                     if (bucket.isFull())
                     {
@@ -186,13 +196,15 @@ public:
                         Bucket<TKey> new_bucket;
                         new_bucket.insertRecord(record);
 
-                        insertInFreeList(f); //Posiciona al lugar donde se debe insertar un nuevo bucket
+                        insertInFreeList(f, accesos); //Posiciona al lugar donde se debe insertar un nuevo bucket
 
                         long new_pos = f.tellp();
                         bucket.setNext(new_pos);
                         write(f, new_bucket);
+                        accesos++;
                         f.seekp(prev_pos, ios::beg);
                         write(f, bucket);
+                        accesos++;
                     }
                     else
                     {
@@ -200,6 +212,7 @@ public:
                         bucket.insertRecord(record);
                         f.seekp(prev_pos, ios::beg);
                         write(f, bucket);
+                        accesos++;
                     }
                 }
                 else
@@ -208,7 +221,7 @@ public:
                     bool requiredLindekPage = false;
                     while (1)
                     {
-                        divideBucket(f, bucket, pos);
+                        divideBucket(f, bucket, pos, accesos);
                         /*
                         cout << "\n---------------\n";
                         for(long i = 0; i < (1 << HASH_HEIGHT); i++){
@@ -220,6 +233,7 @@ public:
                         pos = index[cad];
                         f.seekg(pos, ios::beg);
                         read(f, bucket);
+                        accesos++;
                         if (bucket.isFull() && bucket.hasMaxLocalHeight())
                         {
                             requiredLindekPage = true;
@@ -235,13 +249,15 @@ public:
                         Bucket<TKey> new_bucket;
                         new_bucket.insertRecord(record);
 
-                        insertInFreeList(f); //Posiciona al lugar donde se debe insertar un nuevo bucket
+                        insertInFreeList(f, accesos); //Posiciona al lugar donde se debe insertar un nuevo bucket
 
                         long new_pos = f.tellp();
                         bucket.setNext(new_pos);
                         write(f, new_bucket);
+                        accesos++;
                         f.seekp(pos, ios::beg);
                         write(f, bucket);
+                        accesos++;
                     }
                     else
                     {
@@ -249,6 +265,7 @@ public:
                         bucket.insertRecord(record);
                         f.seekp(pos, ios::beg);
                         write(f, bucket);
+                        accesos++;
                     }
                 }
             }
@@ -258,6 +275,7 @@ public:
                 bucket.insertRecord(record);
                 f.seekp(pos, ios::beg);
                 write(f, bucket);
+                accesos++;
             }
             index_size[cad]++;
             f.close();
@@ -265,7 +283,7 @@ public:
         else cout << "Hash error al abrir data en insert\n";
     }
 
-    RecordHash<TKey> *search(TKey key)
+    RecordHash<TKey> *search(TKey key, int &accesos)
     {
         string cad = hash_function(key);
         if (index_size[cad] == 0)
@@ -280,6 +298,7 @@ public:
             {
                 f.seekg(pos, ios::beg);
                 read(f, bucket);
+                accesos++;
                 RecordHash<TKey> *rec = bucket.searchRecord(key);
                 if (rec)
                 {
@@ -294,7 +313,7 @@ public:
         else cout << "Hash error al abrir data en search\n";
         return nullptr;
     }
-    vector<RecordHash<TKey>> search(TKey key1, TKey key2)
+    vector<RecordHash<TKey>> searchRange(TKey key1, TKey key2)
     {
         vector<RecordHash<TKey>> result;
         unordered_set<long> visited;
@@ -324,7 +343,8 @@ public:
     }
     bool erase(TKey key)
     {
-        if (!exists(key))
+        int x = 0;
+        if (!exists(key, x))
             return false;
 
         string cad = hash_function(key);
@@ -496,6 +516,40 @@ public:
 
         return false;
     }
+
+    void showRecords()
+    {
+        int cont = 1;
+        cout << setw(5) << "N°" << setw(5) << "Review" << setw(40) << "Brand" << setw(10) << "Style" << setw(20) << "Country" << setw(7) << "Stars"
+             << "\n";
+        set<long> visited;
+        fopen(fileName);
+        isfopen
+        {
+            for (long i = 0; i < (1 << HASH_HEIGHT); i++)
+            {
+                string cad = bitset<HASH_HEIGHT>(i).to_string();
+                if (index_size[cad] > 0 && !visited.count(index[cad]))
+                {
+                    Bucket<TKey> bucket;
+                    long pos = index[cad];
+                    while (pos != -1)
+                    {
+                        f.seekg(pos, ios::beg);
+                        read(f, bucket);
+                        bucket.showRecords(cont);
+                        pos = bucket.getNext();
+                    }
+                    visited.insert(index[cad]);
+                }
+            }
+
+            cout << setw(5) << "N°" << setw(5) << "Review" << setw(40) << "Brand" << setw(10) << "Style" << setw(20) << "Country" << setw(7) << "Stars"
+                 << "\n";
+            f.close();
+        }
+        else cout << "Hash error al abrir data en showRecords\n";
+    }
 };
 
 template <typename TKey>
@@ -584,7 +638,7 @@ void ExtendibleHash<TKey>::writeIndex()
 }
 
 template <typename TKey>
-void ExtendibleHash<TKey>::insertInFreeList(fstream &f)
+void ExtendibleHash<TKey>::insertInFreeList(fstream &f, int &accesos)
 {
     if (freeListBucket == -1)
     {
@@ -597,13 +651,14 @@ void ExtendibleHash<TKey>::insertInFreeList(fstream &f)
         Bucket<TKey> deleted_bucket;
         f.seekg(freeListBucket, ios::beg);
         read(f, deleted_bucket);
+        accesos++;
         f.seekp(freeListBucket, ios::beg);
         freeListBucket = deleted_bucket.getNext();
     }
 }
 
 template <typename TKey>
-void ExtendibleHash<TKey>::divideBucket(fstream &f, Bucket<TKey> &bucket, long pos)
+void ExtendibleHash<TKey>::divideBucket(fstream &f, Bucket<TKey> &bucket, long pos, int &accesos)
 {
     //Dividir bucket: new tiene a los que empiezan con 1, y bucket se queda con los que empiezan con 0
     Bucket<TKey> new_bucket = bucket.divide();
@@ -611,12 +666,14 @@ void ExtendibleHash<TKey>::divideBucket(fstream &f, Bucket<TKey> &bucket, long p
     //Actualiza buckets
     f.seekp(pos);
     write(f, bucket);
+    accesos++;
 
-    insertInFreeList(f); //Posiciona al lugar donde se debe insertar un nuevo bucket
+    insertInFreeList(f, accesos); //Posiciona al lugar donde se debe insertar un nuevo bucket
 
     long new_pos = f.tellp();
     f.seekp(new_pos);
     write(f, new_bucket);
+    accesos++;
 
     //Actualiza index
     long local_height = bucket.getLocalHeight();
@@ -626,7 +683,7 @@ void ExtendibleHash<TKey>::divideBucket(fstream &f, Bucket<TKey> &bucket, long p
 }
 
 template <typename TKey>
-bool ExtendibleHash<TKey>::exists(TKey key)
+bool ExtendibleHash<TKey>::exists(TKey key, int &accesos)
 {
     string cad = hash_function(key);
     if (index_size[cad] == 0)
@@ -641,6 +698,7 @@ bool ExtendibleHash<TKey>::exists(TKey key)
         {
             f.seekg(pos, ios::beg);
             read(f, bucket);
+            accesos++;
             if (bucket.existsRecord(key))
             {
                 f.close();

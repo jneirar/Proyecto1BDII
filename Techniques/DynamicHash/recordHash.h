@@ -18,12 +18,13 @@ public:
         this->key = 0;
         string brand = "brand";
         strcpy(this->brand, brand.c_str());
-        string brand = "style";
+        string style = "style";
         strcpy(this->style, style.c_str());
-        string brand = "country";
+        string country = "country";
         strcpy(this->country, country.c_str());
         this->stars = 0.0;
     }
+
     RecordHash(TKey key, string brand, string style, string country, float stars)
     {
         this->key = key;
@@ -79,6 +80,12 @@ public:
     bool operator>=(const RecordHash &a) { return this->key >= a.key; }
     bool operator==(const RecordHash &a) { return this->key == a.key; }
     bool operator!=(const RecordHash &a) { return this->key != a.key; }
+
+    void showRecord(int cont)
+    {
+
+        cout << setw(5) << cont << setw(5) << key << setw(40) << brand << setw(10) << style << setw(20) << country << setw(7) << stars << "\n";
+    }
 };
 
 #endif //RECORD_HASH.H
