@@ -85,6 +85,11 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 | Búsqueda de un registro | 0.000206 seg | 0.000107 seg |
 | Búsqueda por rango| 0.000430 seg  | 0.001861 seg |
 
+### Gráficos
+
+<img src="../imagenes/insercion_cantidad.JPG" width="200">
+
+
 ## Accesos a memoria secundaria
 
 # **Pruebas**
