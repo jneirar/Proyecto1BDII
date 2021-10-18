@@ -144,4 +144,4 @@ En segundo lugar, encontramos que los accesos a memoria para la inserción y bú
 
 Las pruebas son con el siguiente video.
 
-[![Pruebas del sistema de almacenamiento]](https://www.youtube.com/watch?v=cUdKwrsEEWU)
+[![Pruebas del sistema de almacenamiento](/imagenes/icono.jpeg)](https://www.youtube.com/watch?v=cUdKwrsEEWU)
