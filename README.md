@@ -10,7 +10,12 @@
 ## **Tabla de contenido**
 * [Introducción](#introducción)
 * [Técnicas a usar en el proyecto](#técnicas-a-usar)
+  * [Extendible Hash](##extendible-hash)
+  * [Sequential File](##sequential-file)
 * [Resultados](#resultados)
+  * [Tiempo de ejecución](##tiempo-de-ejecución)
+  * [Gráficos de comparación](##gráficos-de-comparación)
+  * [Discusión y análisis de resultados experimentales](##discusión-y-análisis-de-resultados-experimentales)
 * [Pruebas y video del proyecto](#pruebas)
 # **Introducción**
 
@@ -23,8 +28,8 @@ Para el dominio de datos...
 ## **Resultados esperados**
 Los resultados esperados son, un SGDB funcional y que mediante las técnicas implementadas sea eficiente, además de poder mostrarlo en una GUI amigable para los usuarios.
 # **Técnicas a usar**
-- [Extendible Hash](#extendible-hash)
-- [Sequential File](#sequential-file)
+- [Extendible Hash](##extendible-hash)
+- [Sequential File](##sequential-file)
   
 
 ## **Extendible Hash**
@@ -85,7 +90,7 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 | Búsqueda de un registro | 0.000206 seg | 0.000107 seg |
 | Búsqueda por rango| 0.000430 seg  | 0.001861 seg |
 
-### Gráficos
+### Gráficos de comparación
 
 <img src="/imagenes/insercion_cantidad.JPG" width="600">
 <img src="/imagenes/un_registro.JPG" width="600">
@@ -95,5 +100,8 @@ Asimismo, al momento de realizar la eliminación de un registro, lo unico que ca
 
 
 ## Accesos a memoria secundaria
+
+## Discusión y análisis de resultados experimentales
+
 
 # **Pruebas**
